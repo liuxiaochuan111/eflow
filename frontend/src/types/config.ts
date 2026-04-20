@@ -2,7 +2,7 @@
  * 配置清单类型定义
  */
 
-import type { SchemaNodeType, ContainerComponent, FormItemComponent } from './schema'
+import type { ContainerComponent, FormItemComponent } from './schema'
 
 // 属性配置类型
 export interface PropConfig {
@@ -14,8 +14,10 @@ export interface PropConfig {
   min?: number // 最小值
   max?: number // 最大值
   step?: number // 步长
+  precision?: number // 精度
   placeholder?: string
   label?: string
+  description?: string // 属性描述
 }
 
 // 容器配置项

@@ -45,7 +45,7 @@
       />
 
       <!-- 动态列 -->
-      <template v-for="(column, index) in columns" :key="index">
+      <template v-for="(column, _index) in columns" :key="_index">
         <el-table-column
           :prop="column.prop"
           :label="column.label"
@@ -217,7 +217,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: any]
   'node-click': [node: FormItemNode]
   'node-delete': [nodeId: string]
-  'item-reorder': [fromIndex: number, toIndex: number]
+  'item-reorder': [fromId: string, toId: string]
   change: [event: string, value: any]
 }>()
 
@@ -315,7 +315,7 @@ const handleDragStart = (e: DragEvent) => {
   }))
 }
 
-const handleDragEnd = (e: DragEvent) => {
+const handleDragEnd = (_e: DragEvent) => {
   isDragging.value = false
   isDragOver.value = false
 }

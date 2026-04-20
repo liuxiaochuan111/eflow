@@ -70,7 +70,7 @@ const hoveredNodeId = ref<string | null>(null)
 const dragTarget = ref<{ nodeId: string | null; index: number } | null>(null)
 
 // Event binding
-const { executeEvent, eventConfig: localEventConfig } = useEventBinding(props.eventConfig)
+const { executeEvent } = useEventBinding(props.eventConfig)
 
 // Computed
 const schema = computed(() => {
@@ -78,8 +78,9 @@ const schema = computed(() => {
     return localSchema.value
   }
   return {
-    type: 'Container',
-    component: 'Container',
+    id: 'root_container',
+    type: 'Container' as const,
+    component: 'Container' as const,
     display: true,
     options: {},
     children: []
@@ -179,7 +180,7 @@ const handleDrop = (targetNodeId: string | null, index: number = -1) => {
   }
 
   // 触发更新
-  emit('update:schema', { ...localSchema.value })
+  emit('update:schema', JSON.parse(JSON.stringify(localSchema.value)))
 
   // 清除拖拽状态
   draggingNode.value = null
@@ -192,18 +193,20 @@ const handleDrop = (targetNodeId: string | null, index: number = -1) => {
 // 根容器拖拽处理
 const handleRootDragOver = () => {
   if (!draggingNode.value) return
-  hoveredNodeId.value = localSchema.value?.id || null
-  dragTarget.value = { nodeId: localSchema.value?.id || null, index: -1 }
+  const rootId = (localSchema.value as any)?.id || 'root'
+  hoveredNodeId.value = rootId
+  dragTarget.value = { nodeId: rootId, index: -1 }
 }
 
 const handleRootDrop = () => {
-  return handleDrop(localSchema.value?.id || null, -1)
+  const rootId = (localSchema.value as any)?.id || 'root'
+  return handleDrop(rootId, -1)
 }
 
 const handleNodeDelete = (nodeId: string) => {
   const result = deleteNodeById(localSchema.value!, nodeId)
   if (result) {
-    emit('update:schema', { ...localSchema.value })
+    emit('update:schema', JSON.parse(JSON.stringify(localSchema.value)))
     if (selectedNode.value?.id === nodeId) {
       selectedNode.value = null
     }
@@ -247,7 +250,7 @@ const clearValidate = () => {
   // TODO: 实现清除校验
 }
 
-const setSchemaByConfig = (config: Record<string, any>, prop: string) => {
+const setSchemaByConfig = (_config: Record<string, any>, _prop: string) => {
   // TODO: 实现批量设置属性
 }
 

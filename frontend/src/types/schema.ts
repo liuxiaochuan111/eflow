@@ -30,7 +30,7 @@ export type FormItemComponent =
 
 // 基础 Schema 节点
 export interface SchemaNode {
-  id: string
+  id?: string // 可选的id属性
   type: SchemaNodeType
   component: ContainerComponent | FormItemComponent
   display: boolean
@@ -58,6 +58,7 @@ export interface FormItemNode extends SchemaNode {
 
 // Schema 树
 export interface SchemaTree {
+  id?: string
   type: 'Container'
   component: 'Container'
   display: boolean

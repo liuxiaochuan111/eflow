@@ -2,7 +2,7 @@
  * 事件绑定 Composable
  */
 
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { EventConfig, EventAction, EventContext, EventResult } from '@/types'
 
 export function useEventBinding(initialEventConfig?: EventConfig) {
@@ -76,7 +76,7 @@ export function useEventBinding(initialEventConfig?: EventConfig) {
   // 执行单个动作
   const executeAction = async (action: EventAction, context: EventContext): Promise<EventResult> => {
     const { target, method, props } = action
-    const { formData, State, customFuncs, currentModel } = context
+    const { formData, State, customFuncs } = context
 
     switch (method) {
       case 'set':
@@ -107,12 +107,10 @@ export function useEventBinding(initialEventConfig?: EventConfig) {
   // 执行设置属性动作
   const executeSetAction = (
     target: string,
-    props: any,
-    formData: any,
-    State?: any
+    _props: any,
+    _formData: any,
+    _State?: any
   ): EventResult => {
-    const { prop, value } = props
-
     // 这里需要通过某种方式通知外部更新 schema
     // 实际实现中，可以通过事件或回调来处理
     return { success: true, changedModels: [target] }

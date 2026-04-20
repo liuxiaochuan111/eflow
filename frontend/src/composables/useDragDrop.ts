@@ -2,9 +2,9 @@
  * 拖拽逻辑 Composable
  */
 
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { SchemaNode, ContainerConfig, FormItemConfig } from '@/types'
-import { CONTAINER_CONFIG, getContainerConfig } from '@/configs'
+import { getContainerConfig } from '@/configs'
 import { generateId } from '@/utils'
 
 export function useDragDrop(schema: any, updateSchema: (newSchema: any) => void) {

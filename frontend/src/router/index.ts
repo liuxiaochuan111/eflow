@@ -30,7 +30,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   document.title = `${to.meta.title || 'EFlow'} - 表单编排系统`
   next()
 })

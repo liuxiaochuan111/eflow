@@ -2,18 +2,19 @@
  * Schema 操作 Composable
  */
 
-import { ref, computed } from 'vue'
-import type { SchemaNode, SchemaTree, FormItemNode, ContainerNode } from '@/types'
+import { ref } from 'vue'
+import type { SchemaNode, SchemaTree, FormItemNode } from '@/types'
 
 export function useSchema(initialSchema?: SchemaTree) {
   const schema = ref<SchemaTree>(
-    initialSchema || {
+    initialSchema || ({
+      id: 'root_container',
       type: 'Container',
       component: 'Container',
       display: true,
       options: {},
       children: []
-    }
+    } as SchemaTree)
   )
 
   // 生成唯一ID
@@ -25,7 +26,7 @@ export function useSchema(initialSchema?: SchemaTree) {
   const findNode = (nodeId: string, node?: SchemaNode): SchemaNode | null => {
     const current = node || schema.value
 
-    if (current.id === nodeId) {
+    if ((current as any).id === nodeId) {
       return current
     }
 

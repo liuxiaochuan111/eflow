@@ -3,7 +3,7 @@
  */
 
 // 事件动作方法类型
-export type EventMethod = 'set' | 'call' | 'map' | 'show' | 'hide' | 'enable' | 'disable'
+export type EventMethod = 'set' | 'call' | 'map' | 'show' | 'hide' | 'enable' | 'disable' | 'setValue' | 'reset' | 'clearValidate'
 
 // 事件目标类型
 export type EventTarget = string | 'self' | ''

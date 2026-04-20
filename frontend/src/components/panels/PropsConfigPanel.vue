@@ -63,7 +63,7 @@
                     <div class="form-control">
                       <component
                         :is="getPropComponent(propConfig)"
-                        v-model="selectedNode[propName]"
+                        v-model="(selectedNode as any)[propName]"
                         v-bind="getPropBindProps(propConfig)"
                         @change="handlePropChange(propName, $event)"
                       />
@@ -200,10 +200,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import {
-  ElAlert,
   ElTabs,
   ElTabPane,
-  ElDivider,
   ElBadge,
   ElButton,
   ElSwitch,
@@ -215,7 +213,7 @@ import {
   ElMessage
 } from 'element-plus'
 import { Check, RefreshLeft } from '@element-plus/icons-vue'
-import type { SchemaNode, FormItemNode } from '@/types'
+import type { SchemaNode } from '@/types'
 import { getFormItemConfig } from '@/configs'
 
 interface Props {
@@ -265,32 +263,38 @@ const getIcon = (component: string) => {
   return icons[component] || 'QuestionFilled'
 }
 
-// 获取图标颜色
-const getIconColor = (component: string) => {
-  const colors: Record<string, string> = {
-    Input: '#409eff',
-    InputNumber: '#67c23a',
-    Select: '#409eff',
-    DatePicker: '#f56c6c',
-    TimePicker: '#f56c6c',
-    Radio: '#67c23a',
-    Checkbox: '#67c23a',
-    Switch: '#409eff',
-    Slider: '#e6a23c',
-    Upload: '#409eff',
-    Cascader: '#409eff',
-    Rate: '#f7ba2a',
-    ColorPicker: '#409eff',
-    Transfer: '#409eff',
-    TreeSelect: '#409eff',
-    Textarea: '#409eff'
+// 获取组件渐变色
+const getComponentGradient = (component: string) => {
+  const gradients: Record<string, string> = {
+    Input: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    InputNumber: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    Select: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    DatePicker: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+    TimePicker: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    Radio: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
+    Checkbox: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+    Switch: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+    Slider: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+    Upload: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+    Cascader: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+    Rate: 'linear-gradient(135deg, #f7ba2a 0%, #f7797d 100%)',
+    ColorPicker: 'linear-gradient(135deg, #cd9cf2 0%, #f6f3ff 100%)',
+    Transfer: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
+    TreeSelect: 'linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%)',
+    Textarea: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)'
   }
-  return colors[component] || '#909399'
+  return gradients[component] || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
 }
 
 // 判断是否是特殊属性
 const isSpecialProp = (propName: string) => {
   return ['display', 'required', 'span'].includes(propName)
+}
+
+// 获取基础属性数量
+const getBasicPropsCount = () => {
+  if (!props.selectedNode?.options) return 0
+  return Object.keys(props.selectedNode.options).length
 }
 
 // 获取属性标签

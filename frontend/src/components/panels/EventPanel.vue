@@ -9,7 +9,7 @@
     <div v-else class="event-content">
       <div class="event-header">
         <el-tag type="primary">{{ selectedNode.component }}</el-tag>
-        <span class="model-name">{{ selectedNode.model || '未设置model' }}</span>
+        <span class="model-name">{{ (selectedNode as any).model || '未设置model' }}</span>
       </div>
 
       <div class="event-tabs">
@@ -66,9 +66,9 @@
                           <el-option label="当前控件" value="self" />
                           <el-option
                             v-for="item in availableTargets"
-                            :key="item.model"
-                            :label="`${item.label} (${item.model})`"
-                            :value="item.model"
+                            :key="(item as any).model"
+                            :label="`${(item as any).label} (${(item as any).model})`"
+                            :value="(item as any).model"
                           />
                         </el-select>
                       </el-form-item>
@@ -165,7 +165,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { Plus, Delete, Connection } from '@element-plus/icons-vue'
 import { FORM_ITEM_CONFIG } from '@/configs'
 import type { SchemaNode, EventConfig, EventAction } from '@/types'
@@ -190,8 +190,8 @@ const activeEventTab = ref('change')
 
 // 获取当前选中节点的事件配置
 const currentNodeConfig = computed(() => {
-  if (!props.selectedNode?.model) return null
-  const model = props.selectedNode.model
+  if (!(props.selectedNode as any)?.model) return null
+  const model = (props.selectedNode as any).model
 
   if (!props.eventConfig[model]) {
     return {}
@@ -224,7 +224,7 @@ const availableEvents = computed(() => {
 const availableTargets = computed(() => {
   return props.allNodes.filter(node =>
     node.type === 'FormItem' &&
-    node.model &&
+    (node as any).model &&
     node.id !== props.selectedNode?.id
   )
 })
@@ -256,6 +256,7 @@ const getEventLabel = (eventName: string) => {
 // 添加事件动作
 const addEventAction = (eventName: string) => {
   const newAction: EventAction = {
+    id: `action_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     target: 'self',
     method: 'set',
     props: {
@@ -277,10 +278,10 @@ const removeEventAction = (eventName: string, index: number) => {
 
 // 更新事件配置
 const updateEventConfig = (eventName: string, actions: any[]) => {
-  if (!props.selectedNode?.model) return
+  if (!(props.selectedNode as any)?.model) return
 
   const newConfig = { ...props.eventConfig }
-  const model = props.selectedNode.model
+  const model = (props.selectedNode as any).model
 
   if (!newConfig[model]) {
     newConfig[model] = {}
@@ -292,7 +293,7 @@ const updateEventConfig = (eventName: string, actions: any[]) => {
 }
 
 // 目标改变时的处理
-const onTargetChange = (action: EventAction, index: number) => {
+const onTargetChange = (action: EventAction, _index: number) => {
   // 根据目标类型设置默认值
   if (action.target !== 'self' && action.method === 'set') {
     action.props = {

@@ -53,12 +53,12 @@
         <!-- 拖拽插入指示器 -->
         <el-col
           v-if="isBuild && isDragOver && dragTarget?.index === index"
-          :span="child.span || 24"
+          :span="(child as any).span || 24"
         >
           <div class="drop-indicator"></div>
         </el-col>
 
-        <el-col :span="child.span || 24">
+        <el-col :span="(child as any).span || 24">
           <component
             :is="getChildComponent(child)"
             :schema="child"

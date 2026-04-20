@@ -128,7 +128,7 @@ const emit = defineEmits<{
   'update:modelValue': [value: any]
   'node-click': [node: FormItemNode]
   'node-delete': [nodeId: string]
-  'item-reorder': [fromIndex: number, toIndex: number]
+  'item-reorder': [fromId: string, toId: string]
   change: [event: string, value: any]
 }>()
 
@@ -209,7 +209,7 @@ const handleDragStart = (e: DragEvent) => {
   }))
 }
 
-const handleDragEnd = (e: DragEvent) => {
+const handleDragEnd = (_e: DragEvent) => {
   isDragging.value = false
   isDragOver.value = false
 }
