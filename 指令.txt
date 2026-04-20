@@ -1,0 +1,125 @@
+项目背景
+
+通过在编排页面拖拽组件，并且点击编排页面上的组件时可以编排控件的属性，编排一个表单片段
+整体包括的功能，后端可以先用nodejs工程mock
+1.一个清单界面 用于显示表单片段清单，表格上方有新增与删除，表格内有表单名称 表单id   点击表单名称进入编排界面
+2. 编排界面上方提供 表单名称 表单id的输入，左侧提供三块内容 分别是容器清单，表单项清单，数据结构
+3. 中间是显示区域，用于显示表单内容右侧是 控件属性填写区域  属性填写区域的属性分为 表单项属性 和控件属性
+4. 右侧属性配置区域新增一个tab面板 用于给当前active控件绑定事件
+5. 头部提供toolbar区域提供  预览  多尺寸预览 保存的时候是保存的一个对象{customizeData:[{},{}], customizeEvent:[{}，{}]} 重置等能力
+6. 存在哪些可用的容器类型的控件是根据一份container清单来实现的 数据格式为 
+{
+    type:'Container',
+    name:'Block',
+    props: {
+
+    },
+    father:['', ''] // 用于控制拖拽的时候哪些控件可以放到哪些控件的下方 例如Row控件可以放到Form控件的下方
+}
+容器类型的控件包括：Block  Container  Form  Row
+7.存在哪些可用的表单项 是根据一份FormItem清单来实现的， 数据格式位
+{
+    type:'FormItem',
+    name:'Input',
+    props: {
+        placeholder: {
+            component:'Input', // 用于制定用哪种类型的组件来显示右侧属性面板
+            default:'',
+            required:'',
+            type:'String'
+        }
+        ...
+    },
+    events: ['change', 'input'] // 用于指定当前控件可以配置哪些事件
+    father:[],
+    slots:{}  // 用于指定当前控件可以配置哪些插槽
+}
+
+8.控件最终封装成两个组件  一个是清单组件  另一个是构建组件， 其中构建页面可以用于编排场景 预览场景（包含头部工具条）  使用场景（只有构建出的表单内容）
+9. 构建组件
+   1.支持v-model双向绑定， 
+   2.支持入参pageUrl(表单id) 组件内部根据表单id往服务端查找schema元数据,将接口数据转换成对应的树状结构数据
+   3.支持configData,往表单项上补充属性
+   4.compConfig指定表单项用哪个控件渲染
+   5.isBuild 是构建场景 还是使用场景
+   6.支持动态插槽 传递给表单项使用
+   7.组件渲染完成后往上一层级传出一个renderEnd事件  供页面使用
+   8.支持入参一个State对象，这个对象可能会参与到绑定事件时的方法逻辑中 例如State.model1> formDta.model2
+   9. 支持传入customFuncs：{func1:()=>{}, func2:()=>{}}  用户在给表单项编排事件联动的时候除了可以选择改变当前控件的各种属性 其他控件的各种属性，也可以选择执行customFuncs中的方法
+   10. 组件提供增删改查多个节点的schema元数据的能力 例如  setSchemaByConfig:({model1: true, model2: false},  'display' )
+   11. 提供参数skipModels:['model1', 'model2']  传入数据会跳过这一个节点的初始化与渲染
+   12. 提供表单校验方法，清除校验
+   13. 根据schema数据自动构建出一个formData  可以和页面上表单项双向绑定的数据，自动构建出一个表单页面， 表单项上自动追加配置的事件
+
+10. schema数据结构为
+  {
+    type:'Container',
+    component: 'Contaienr',
+    display: true,
+    options: {
+        collapse: false,
+        ...
+    },
+    children:[{
+            type:'Container',
+            component: 'Form',
+            model:'Form1',
+            display: true,
+            options: {
+                labelPosition: 'top',
+                ...
+            },
+            children: [{
+                        type:'Container',
+                        component: 'Row',
+                        display: true,
+                        options: {},
+                        children: [{
+                            type:'FormItem',
+                            component: 'Input',
+                            model:'input1',
+                            span: 4,
+                            required:false,
+                            label:'输入框',
+                            labelEn:'',
+                            display: true,
+                            options: {
+                                placeholder: '',
+                                ...
+                            },
+                        }]
+            }]
+    }]
+  }
+
+  11.eventConfig 数据结构为
+  {
+    'model1':{
+        change:[{tagget:'', method:'', props:'', ...}, {}]
+    }
+  }
+
+  可以先用  element-ui 组件实现以上功能  组件清单 尽可能包含所有组件  组件属性尽可能详细  完成UI交互优化 完成单元测试  完成readme编写  完成一份使用文档
+
+
+  拖拽一个表单项到编排页面时没生效， 优化拖拽效果，拖拽悬停时知道是往哪个容器中放置表单项的，表单项 容器 等做成美观一些的小卡片   
+
+    拖拽一个表单项到编排页面时没生效  点击配置 删除按钮都不生效
+
+    按照element文档  尽可能补充 每个表单项的可配置属性
+
+    例如输入框  为什么 右侧属性面板只显示了  5个字段
+
+    每个表单项  容器 补充关键属性 字段 对应的是schema数据中的model内容
+
+    表单属性缺失   事件配置内容缺失   编排界面  属性配置界面等界面优化一下
+
+    增加一个使用场景的路由  并添加对应的页面  验证组件的使用场景
+
+    容器组件上增加  配置 删除等功能
+
+    增加拖拽表单项调整表单项 之间的相对位置
+
+    表单项中增加 表格组件
+
+    全面检查可能需要优化的内容 或者补充的功能  检查是否存在明显bug缺陷  then 提交代码到github

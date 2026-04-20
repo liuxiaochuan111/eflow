@@ -1,0 +1,32 @@
+{
+  "name": "eflow-frontend",
+  "version": "1.0.0",
+  "description": "EFlow - Visual Form Builder",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.7",
+    "element-plus": "^2.6.3",
+    "@element-plus/icons-vue": "^2.3.1",
+    "vuedraggable": "^4.1.0",
+    "@vueuse/core": "^10.9.0",
+    "axios": "^1.6.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.3",
+    "vue-tsc": "^2.0.7",
+    "vite": "^5.2.0",
+    "vitest": "^1.4.0",
+    "@vue/test-utils": "^2.4.5",
+    "jsdom": "^24.0.0",
+    "sass": "^1.72.0"
+  }
+}
