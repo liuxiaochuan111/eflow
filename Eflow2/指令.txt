@@ -1,0 +1,35 @@
+充分应用已安装的skill 确保工程质量
+
+请先写功能测试用例,并基于测试用例完成工程, 构建时UI界面，交互细节，流畅性等要足够专业 项目完成后要能直接企业级应用 组件尽量直接使用element-ui组件  不满足条件时再自己构造组件
+
+这是一个编排表单片段的工具，可以通过拖拽功能可视化地生成一份表单片段 能够给每一项节点配置属性 配置事件，并按照不同的pageUrl存储起来， 之后通过给渲染组件传入不同的pageUrl渲染出不同的表单片段
+
+1. 架构 vue3 ts element-ui vite mitt 
+2. 完成一个列表界面 使用 el-form 和 el-table构建 拥有增删改查的能力, 进入编辑详情页的能力
+3.elementui文档 地址https://element-plus.org/zh-CN/component/overview 允许打开浏览器 查看文档内容
+4. 点击一条数据进入详情页 即 编排页面  （顶部工具条  内容区左中右布局）
+5.编排页面左侧 容器是根据 setters/container/index.js导出内容生成的  举例一份数据结构类似 setters.js
+6.编排页面左侧 组件是根据 setters/form/index.js导出内容生成的 举例一份数据结构类似 setters.js
+7.中间是编排区域 支持拖拽左侧卡片 放置在中间编排页面, 编排结构参考 setters下对应文件的 father属性, 例如formitem.js的father: ['Row', 'wrap'], formitem类型的只可以放置到 ['Row', 'wrap'] 类型的节点下
+8. 右侧属性区域 是根据setters下对应的props生成的
+9. 组件来源自components.js下导出的组件  帮我补全其它组件;
+10. 编排出的界面对应的元数据结构 参考根目录下的schema.js
+11. 编排出的界面要有 数据双向绑定的能力 绑定的字段对应 组件名称 也就是 default.js 中对应节点的model字段
+12. 可以按照setters.js 的 events 给当前组件绑定事件， 渲染成界面后事件要能够执行
+13. 补充说明 每个控件对应一份setters文件 例如 setters/formItem/input.js  每个container也对应一个setters文件    容器类型的控件包括：Block  Container  Tab  Tabitem  Row 
+14.  模拟获取清单列表的接口 以及提交编排的数据接口包括schema数据与eventConfig数据   提交数据结构为 {schema:[{},{}], evnet:[{}]}
+15. 提供一系列方法去增删改查 这份schema的能力完成后 验证是否存在启动编译问题 验证是否存在ts类型问题 是否完全满足以上功能点 多次验证直到不再有错误
+
+
+vue文件内不要直接从element-plus中引用组件 改为 从根目录下的components文件中引入  组件重命名规则 参考components 内的内容
+
+Rowts  增加 father：['Block', 'Container']  限制row组件只能拖拽到   这两个容器下方， 其它formItem类型的组件 只能拖拽到Row组件下方
+封装Block组件 和 Container组件 内部默认放置一个 表单组件 并预留默认插槽
+
+每拖拽进一个form下的组件  默认为放进了一个这样的结构  举例： <el-form-item> <el-input/> </el-form-item>  同时点击这个组件的时候 右侧面板上半部分提供配置formItem属性的能力 下半部分 提供配置组件本身属性的能力
+
+当我尝试往Block组件中拖放一个新的Row时  不生效 其他拖拽也不生效  拖拽时  当前组件允许放置的容器边线高亮  鼠标松开后 直接放置进去
+
+ 当我拖一个 输入框组件到 row容器时  无法放入  提示  Input 只能放置在 Row 中，不能放置在 Block 中
+
+当我拖放一个表单项组件进入编排页面时  例如拖放一个输入框放进row容器内的时候  鼠标松开后 直接显示一个输入框  label名字 默认是  输入框1  输入框2  绑定字段 默认是input1  input2 其它组件类似

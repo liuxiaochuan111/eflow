@@ -1,0 +1,36 @@
+{
+  "name": "eflow2-form-builder",
+  "version": "1.0.0",
+  "description": "Enterprise Form Builder with Visual Drag & Drop",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "element-plus": "^2.7.0",
+    "@element-plus/icons-vue": "^2.3.1",
+    "mitt": "^3.0.1",
+    "sortablejs": "^1.15.2",
+    "vue-draggable-plus": "^0.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "typescript": "^5.4.3",
+    "vite": "^5.2.0",
+    "vue-tsc": "^2.0.7",
+    "@types/node": "^20.12.7",
+    "@types/sortablejs": "^1.15.7",
+    "vitest": "^1.5.0",
+    "@vue/test-utils": "^2.4.5",
+    "jsdom": "^24.0.0",
+    "@vitest/ui": "^1.5.0"
+  }
+}

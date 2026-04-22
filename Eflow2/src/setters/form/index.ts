@@ -1,0 +1,7 @@
+export { default as FormItemSetters } from './FormItem'
+export { default as InputSetters } from './Input'
+export { default as SelectSetters } from './Select'
+export { default as SwitchSetters } from './Switch'
+export { default as DatePickerSetters } from './DatePicker'
+export { default as TimePickerSetters } from './TimePicker'
+export { default as InputNumberSetters } from './InputNumber'
