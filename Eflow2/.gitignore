@@ -42,5 +42,8 @@ coverage/
 .temp/
 .tmp/
 
+# Git worktrees
+.worktrees
+
 # OS
 Thumbs.db
