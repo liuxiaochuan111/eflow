@@ -232,7 +232,7 @@ describe('EventExecutor', () => {
       const events = { click: '$setField("clicked", true)' }
       let capturedHandler: any
 
-      mockComponent.$on = vi.fn((event, handler) => {
+      mockComponent.$on = vi.fn((_event, handler) => {
         capturedHandler = handler
       })
 
@@ -250,7 +250,7 @@ describe('EventExecutor', () => {
       const events = { click: 'throw new Error("Handler error")' }
       let capturedHandler: any
 
-      mockComponent.$on = vi.fn((event, handler) => {
+      mockComponent.$on = vi.fn((_event, handler) => {
         capturedHandler = handler
       })
 

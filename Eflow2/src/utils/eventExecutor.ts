@@ -124,7 +124,7 @@ function createSafeContext(context: {
 /**
  * 格式化错误信息，提供用户友好的错误消息
  */
-function formatError(error: unknown, code: string): string {
+function formatError(error: unknown, _code: string): string {
   if (error instanceof Error) {
     // 隐藏技术栈信息，只提供有用的错误信息
     const message = error.message

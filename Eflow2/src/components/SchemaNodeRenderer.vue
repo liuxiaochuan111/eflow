@@ -80,6 +80,7 @@
         @blur="handleEvent(childComponent, 'blur', $event)"
         @focus="handleEvent(childComponent, 'focus', $event)"
         @change="handleEvent(childComponent, 'change', $event)"
+        @clear="handleEvent(childComponent, 'clear', $event)"
       />
       <span v-else class="form-item-empty">请拖拽表单组件到此处</span>
     </aui-form-item>
@@ -99,6 +100,7 @@
         @blur="handleEvent(node, 'blur', $event)"
         @focus="handleEvent(node, 'focus', $event)"
         @change="handleEvent(node, 'change', $event)"
+        @clear="handleEvent(node, 'clear', $event)"
       />
     </aui-form-item>
   </div>
@@ -106,6 +108,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import { executeEventHandler } from '../utils/eventExecutor'
 import type { SchemaNode } from '../types'
 
@@ -169,7 +172,16 @@ const handleEvent = (node: SchemaNode | undefined, eventName: string, event: Eve
       args: []
     })
   } catch (error) {
+    // Log error to console for debugging
     console.error(`Event "${eventName}" execution error:`, error)
+
+    // Show user-friendly error message
+    const errorMessage = error instanceof Error ? error.message : '事件执行失败，请检查配置'
+    ElMessage.error({
+      message: errorMessage,
+      duration: 5000,
+      showClose: true
+    })
   }
 }
 
@@ -185,6 +197,12 @@ onMounted(() => {
       })
     } catch (error) {
       console.error('Mounted event error:', error)
+      const errorMessage = error instanceof Error ? error.message : '组件加载事件执行失败'
+      ElMessage.error({
+        message: errorMessage,
+        duration: 5000,
+        showClose: true
+      })
     }
   }
 })
